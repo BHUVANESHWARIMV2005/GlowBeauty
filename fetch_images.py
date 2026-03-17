@@ -6,6 +6,7 @@ import ssl  # Added for SSL bypass
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'glowbeauty.settings')
 django.setup()
 
+from django.conf import settings
 from products.models import Category, Product
 
 def download_image(url, path):
@@ -23,7 +24,7 @@ def download_image(url, path):
         return False
 
 def setup_images():
-    base_media = '/Users/bhuvaneshwarivinayagamoorthy/.gemini/antigravity/scratch/glowbeauty_site/media'
+    base_media = settings.MEDIA_ROOT
     os.makedirs(os.path.join(base_media, 'categories'), exist_ok=True)
     os.makedirs(os.path.join(base_media, 'products'), exist_ok=True)
 
