@@ -8,8 +8,8 @@
         <!-- Product Image -->
         <div style="flex: 1; min-width: 400px;">
             <div style="border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-                {% if product.product_image %}
-                    <img src="{{ product.product_image.url }}" alt="{{ product.name }}" style="width: 100%; height: auto; display: block;">
+                {% if product.get_image_url %}
+                    <img src="{{ product.get_image_url }}" alt="{{ product.name }}" style="width: 100%; height: auto; display: block;">
                 {% else %}
                     <div style="aspect-ratio: 1; background: #eee; display: flex; align-items: center; justify-content: center;">No Image Available</div>
                 {% endif %}
@@ -78,8 +78,8 @@
             {% for related in related_products %}
                 <div class="product-card">
                     <a href="{% url 'products:product_detail' related.pk %}">
-                        {% if related.product_image %}
-                            <img src="{{ related.product_image.url }}" alt="{{ related.name }}" class="product-image">
+                        {% if related.get_image_url %}
+                            <img src="{{ related.get_image_url }}" alt="{{ related.name }}" class="product-image">
                         {% else %}
                             <div style="height: 250px; background: #eee; display: flex; align-items: center; justify-content: center;">No Image</div>
                         {% endif %}

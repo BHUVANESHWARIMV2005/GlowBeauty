@@ -50,8 +50,8 @@
                 {% for product in products %}
                     <div class="product-card">
                         <a href="{% url 'products:product_detail' product.pk %}">
-                            {% if product.product_image %}
-                                <img src="{{ product.product_image.url }}" alt="{{ product.name }}" class="product-image">
+                            {% if product.get_image_url %}
+                                <img src="{{ product.get_image_url }}" alt="{{ product.name }}" class="product-image">
                             {% else %}
                                 <div style="height: 300px; background: #eee; display: flex; align-items: center; justify-content: center;">No Image</div>
                             {% endif %}

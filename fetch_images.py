@@ -46,19 +46,13 @@ def setup_images():
         }
     }
 
-    # Update categories
+    # Update categories (Using URLs directly)
     for slug, url in data['categories'].items():
-        filename = f"{slug}.jpg"
-        filepath = os.path.join(base_media, 'categories', filename)
-        if download_image(url, filepath):
-            Category.objects.filter(slug=slug).update(image=f"categories/{filename}")
+        Category.objects.filter(slug=slug).update(image=url)
 
-    # Update products
+    # Update products (Using URLs directly)
     for name, url in data['products'].items():
-        filename = f"{name.lower().replace(' ', '_')}.jpg"
-        filepath = os.path.join(base_media, 'products', filename)
-        if download_image(url, filepath):
-            Product.objects.filter(name=name).update(product_image=f"products/{filename}")
+        Product.objects.filter(name=name).update(product_image=url)
 
     print("Images updated successfully!")
 

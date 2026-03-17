@@ -8,6 +8,17 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def get_image_url(self):
+        if self.image:
+            if self.image.name.startswith('http'):
+                return self.image.name
+            try:
+                return self.image.url
+            except:
+                return None
+        return None
+
 class Product(models.Model):
     CATEGORY_CHOICES = [
         ('skincare', 'Skincare'),
@@ -34,3 +45,11 @@ class Product(models.Model):
     @property
     def current_price(self):
         return self.discount_price if self.discount_price else self.price
+
+    @property
+    def get_image_url(self):
+        if self.product_image and hasattr(self.product_image, 'url'):
+            if self.product_image.name.startswith('http'):
+                return self.product_image.name
+            return self.product_image.url
+        return None
