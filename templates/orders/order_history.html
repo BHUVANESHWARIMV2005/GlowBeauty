@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Order History | GlowBeauty{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 4rem 2rem;">
+    <h1 style="font-size: 2.5rem; margin-bottom: 3rem;">My Orders</h1>
+
+    {% if orders %}
+    <div style="display: flex; flex-direction: column; gap: 2rem;">
+        {% for order in orders %}
+        <div style="background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h3 style="margin-bottom: 0.5rem;">Order #{{ order.id }}</h3>
+                <p style="color: #888; font-size: 0.9rem;">Placed on {{ order.order_date|date:"F j, Y" }}</p>
+                <div style="margin-top: 1rem; display: flex; gap: 1rem; align-items: center;">
+                    <span style="padding: 0.4rem 1rem; border-radius: 50px; background: {% if order.status == 'delivered' %}#d4edda{% else %}#fff3cd{% endif %}; color: {% if order.status == 'delivered' %}#155724{% else %}#856404{% endif %}; font-size: 0.8rem; font-weight: 600; text-transform: uppercase;">
+                        {{ order.get_status_display }}
+                    </span>
+                    <span style="color: #666; font-size: 0.9rem;">{{ order.items.count }} items</span>
+                </div>
+            </div>
+            
+            <div style="text-align: right;">
+                <p style="font-size: 1.5rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem;">${{ order.total_price }}</p>
+                <a href="#" class="btn" style="border: 1px solid #ddd; padding: 0.6rem 1.5rem; font-size: 0.9rem;">View Details</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align: center; padding: 5rem 0;">
+        <h2 style="color: #666;">You haven't placed any orders yet.</h2>
+        <a href="{% url 'products:product_list' %}" class="btn btn-primary" style="margin-top: 2rem;">Start Shopping</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} | GlowBeauty{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 4rem 2rem;">
+    <div style="display: flex; gap: 4rem; flex-wrap: wrap;">
+        <!-- Product Image -->
+        <div style="flex: 1; min-width: 400px;">
+            <div style="border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                {% if product.product_image %}
+                    <img src="{{ product.product_image.url }}" alt="{{ product.name }}" style="width: 100%; height: auto; display: block;">
+                {% else %}
+                    <div style="aspect-ratio: 1; background: #eee; display: flex; align-items: center; justify-content: center;">No Image Available</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div style="flex: 1; min-width: 400px;">
+            <p style="color: var(--primary-color); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.5rem;">{{ product.brand }}</p>
+            <h1 style="font-size: 3rem; margin-bottom: 1rem;">{{ product.name }}</h1>
+            
+            <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem;">
+                <div style="color: #ffc107; font-size: 1.2rem;">
+                    <i class="fas fa-star"></i> {{ product.rating }}
+                </div>
+                <span style="color: #888;">(120+ Reviews)</span>
+            </div>
+
+            <div style="margin-bottom: 2.5rem;">
+                {% if product.discount_price %}
+                    <span style="font-size: 2.5rem; font-weight: 700; color: var(--primary-color);">${{ product.discount_price }}</span>
+                    <span style="text-decoration: line-through; color: #888; margin-left: 1rem; font-size: 1.5rem;">${{ product.price }}</span>
+                {% else %}
+                    <span style="font-size: 2.5rem; font-weight: 700; color: var(--primary-color);">${{ product.price }}</span>
+                {% endif %}
+            </div>
+
+            <div style="margin-bottom: 3rem;">
+                <h3 style="font-size: 1.2rem; margin-bottom: 1rem;">Description</h3>
+                <p style="color: #666; line-height: 1.8; font-size: 1.1rem;">{{ product.description }}</p>
+            </div>
+
+            {% if product.ingredients %}
+            <div style="margin-bottom: 3rem;">
+                <h3 style="font-size: 1.2rem; margin-bottom: 1rem;">Key Ingredients</h3>
+                <p style="color: #666; line-height: 1.8;">{{ product.ingredients }}</p>
+            </div>
+            {% endif %}
+
+            <div style="display: flex; gap: 1.5rem;">
+                <form action="{% url 'cart:add_to_cart' product.pk %}" method="post" style="flex: 1; display: flex; gap: 1rem;">
+                    {% csrf_token %}
+                    <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}" style="width: 70px; padding: 1rem; border-radius: 50px; border: 1px solid #ddd; text-align: center; font-weight: 600;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1; font-size: 1.1rem;">Add to Cart</button>
+                </form>
+                <button class="btn" style="border: 1px solid var(--primary-color); color: var(--primary-color);"><i class="far fa-heart"></i></button>
+            </div>
+
+            <div style="margin-top: 3rem; border-top: 1px solid #eee; padding-top: 2rem; display: flex; gap: 2rem;">
+                <div style="display: flex; align-items: center; gap: 0.8rem; color: #444;">
+                    <i class="fas fa-truck" style="color: var(--primary-color);"></i>
+                    <span>Free Shipping</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.8rem; color: #444;">
+                    <i class="fas fa-undo" style="color: var(--primary-color);"></i>
+                    <span>30-Day Returns</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    <div style="margin-top: 8rem;">
+        <h2 class="section-title" style="text-align: left;">You May Also Like</h2>
+        <div class="product-grid" style="padding: 0;">
+            {% for related in related_products %}
+                <div class="product-card">
+                    <a href="{% url 'products:product_detail' related.pk %}">
+                        {% if related.product_image %}
+                            <img src="{{ related.product_image.url }}" alt="{{ related.name }}" class="product-image">
+                        {% else %}
+                            <div style="height: 250px; background: #eee; display: flex; align-items: center; justify-content: center;">No Image</div>
+                        {% endif %}
+                    </a>
+                    <div class="product-info">
+                        <span class="product-brand">{{ related.brand }}</span>
+                        <h3 class="product-name">{{ related.name }}</h3>
+                        <span class="product-price">${{ related.current_price }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

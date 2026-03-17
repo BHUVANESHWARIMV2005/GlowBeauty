@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile | GlowBeauty{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 4rem 2rem;">
+    <div style="display: flex; gap: 4rem;">
+        <!-- Sidebar -->
+        <div style="width: 300px;">
+            <div style="background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center;">
+                <div style="width: 120px; height: 120px; background: var(--secondary-color); border-radius: 50%; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                    {% if profile.profile_image %}
+                        <img src="{{ profile.profile_image.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    {% else %}
+                        <i class="fas fa-user" style="font-size: 3rem; color: var(--primary-color);"></i>
+                    {% endif %}
+                </div>
+                <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">{{ user.username }}</h2>
+                <p style="color: #888; font-size: 0.9rem; margin-bottom: 2rem;">{{ user.email }}</p>
+                
+                <ul style="list-style: none; padding: 0; text-align: left;">
+                    <li style="margin-bottom: 1rem;"><a href="#" style="text-decoration: none; color: var(--primary-color); font-weight: 600;"><i class="fas fa-th-large" style="margin-right: 10px;"></i> Dashboard</a></li>
+                    <li style="margin-bottom: 1rem;"><a href="{% url 'orders:order_history' %}" style="text-decoration: none; color: #666;"><i class="fas fa-shopping-bag" style="margin-right: 10px;"></i> My Orders</a></li>
+                    <li style="margin-bottom: 1rem;"><a href="#" style="text-decoration: none; color: #666;"><i class="fas fa-heart" style="margin-right: 10px;"></i> Wishlist</a></li>
+                    <li style="margin-bottom: 1rem;"><a href="#" style="text-decoration: none; color: #666;"><i class="fas fa-map-marker-alt" style="margin-right: 10px;"></i> Addresses</a></li>
+                    <li style="border-top: 1px solid #eee; padding-top: 1rem; margin-top: 1rem;">
+                        <form action="{% url 'users:logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" style="background: none; border: none; color: #ff4444; cursor: pointer; font-weight: 600; width: 100%; text-align: left; padding: 0;"><i class="fas fa-sign-out-alt" style="margin-right: 10px;"></i> Logout</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div style="flex: 1;">
+            <div style="background: white; padding: 3rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                <h1 style="font-size: 2rem; margin-bottom: 2rem;">Profile Details</h1>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <label style="display: block; color: #888; font-size: 0.9rem; margin-bottom: 0.5rem;">User Name</label>
+                        <p style="font-size: 1.1rem; font-weight: 500;">{{ user.username }}</p>
+                    </div>
+                    <div>
+                        <label style="display: block; color: #888; font-size: 0.9rem; margin-bottom: 0.5rem;">Email Address</label>
+                        <p style="font-size: 1.1rem; font-weight: 500;">{{ user.email }}</p>
+                    </div>
+                    <div>
+                        <label style="display: block; color: #888; font-size: 0.9rem; margin-bottom: 0.5rem;">Phone Number</label>
+                        <p style="font-size: 1.1rem; font-weight: 500;">{{ profile.phone_number|default:"Not provided" }}</p>
+                    </div>
+                    <div>
+                        <label style="display: block; color: #888; font-size: 0.9rem; margin-bottom: 0.5rem;">Member Since</label>
+                        <p style="font-size: 1.1rem; font-weight: 500;">{{ user.date_joined|date:"F Y" }}</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 3rem;">
+                    <label style="display: block; color: #888; font-size: 0.9rem; margin-bottom: 1rem;">Primary Address</label>
+                    <div style="padding: 1.5rem; background: #fafafa; border-radius: 12px; border: 1px solid #eee;">
+                        {% if profile.address %}
+                            {{ profile.address }}
+                        {% else %}
+                            You haven't added an address yet.
+                        {% endif %}
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" style="margin-top: 3rem;">Edit Profile</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
