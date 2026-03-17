@@ -25,6 +25,7 @@ def download_image(url, path):
 
 def setup_images():
     base_media = settings.MEDIA_ROOT
+    print(f"Using media directory: {base_media}")
     os.makedirs(os.path.join(base_media, 'categories'), exist_ok=True)
     os.makedirs(os.path.join(base_media, 'products'), exist_ok=True)
 
